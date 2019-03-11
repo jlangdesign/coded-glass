@@ -62,6 +62,7 @@
   /* .main-txt properties */
   --main-txt-display: block;
   --main-txt-grid-areas: "";
+  --main-txt-column-widths: auto auto auto;
   --main-txt-heading-margin: 50px 0;
   --main-txt-bg-color: rgb(0, 0, 0, 0);
   --max-main-line-length: 1090px;
@@ -72,7 +73,10 @@
   --main-txt-padding: 0 75px 0 75px;
   --main-desc-padding-left: 0px;
   --main-desc-margin: initial;
+  --main-desc-column-count: 1;
+  --quote-display: block;
   --quote-padding: 25px 0 25px 0;
+  --quote-margin: 0;
   /* .matrix properties */
   --matrix-item-side-length: 70%;
   --matrix-item-max-side-length: 700px;
@@ -339,7 +343,11 @@ a:hover {
   background-color: var(--main-txt-bg-color);
   z-index: 1;
   display: var(--main-txt-display);
-  grid-template-areas: var(--main-txt-grid-areas); }
+  grid-template-areas: var(--main-txt-grid-areas);
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  grid-template-rows: auto auto 1fr;
+  grid-template-columns: var(--main-txt-column-widths); }
 
 /* Title of the researcher's collection of work */
 .main-title {
@@ -359,7 +367,11 @@ a:hover {
   font-size: var(--main-desc-size);
   grid-area: desc;
   padding-left: var(--main-desc-padding-left);
-  margin: var(--main-desc-margin); }
+  margin: var(--main-desc-margin);
+  -webkit-column-count: var(--main-desc-column-count);
+          column-count: var(--main-desc-column-count);
+  -webkit-column-fill: auto;
+          column-fill: auto; }
 
 /* Styling for "about" paragraph */
 .about {
@@ -367,8 +379,9 @@ a:hover {
 
 /* Styling for quotes */
 .quote {
+  display: var(--quote-display);
   padding: var(--quote-padding);
-  margin: 0;
+  margin: var(--quote-margin);
   font-style: italic; }
 
 /* Actual URL to the collection */
@@ -540,11 +553,14 @@ a:hover {
     --main-txt-heading-margin: 0px 0px 25px 0px;
     --main-title-size: 120px;
     --main-researcher-name-size: 84px;
-    --main-desc-size: 42px;
+    --main-desc-size: 40px;
     --main-link-size: 30px;
     --main-txt-padding: 75px;
     --main-desc-padding-left: 75px;
     --main-desc-margin: 0px;
+    --main-desc-column-count: 2;
+    --quote-padding: 0 0 0 0;
+    --quote-margin: 36px 0 0 0;
     /* .matrix properties */
     --matrix-width: 100%;
     --matrix-item-height: calc(var(--top-row-height) / 2);
@@ -557,17 +573,7 @@ a:hover {
     --imm-sch-url-padding: 0 0 0 0;
     --imm-sch-url-display: inline;
     --logo-display: inline;
-    --logo-padding: 0 0 0 0; }
-  .main-txt {
-    grid-template-columns: 25% 75%;
-    -webkit-box-sizing: border-box;
-            box-sizing: border-box; }
-  .main-desc {
-    -webkit-column-count: 2;
-            column-count: 2; }
-  .quote {
-    padding: 0;
-    margin: 36px 0 0 0; } }
+    --logo-padding: 0 0 0 0; } }
 
 /* Aspect ratios 10/7 to 1/1 */
 @media (max-aspect-ratio: 10 / 7) and (min-height: 2100px) {
@@ -576,9 +582,9 @@ a:hover {
     /* Image Viewer iframe properties */
     --slide-title-size: 168px;
     /* .main-txt properties */
-    --main-title-size: 108px;
-    --main-researcher-name-size: 72px;
-    --main-desc-size: 36px;
+    --main-title-size: 102px;
+    --main-researcher-name-size: 66px;
+    --main-desc-size: 32px;
     --main-link-size: 24px; } }
 
 /**********************************************************************/
@@ -586,6 +592,8 @@ a:hover {
 /**********************************************************************/
 /**********************************************************************/
 /******************** Portrait (1/1 to 10/21) ********************/
+/**********************************************************************/
+/**********************************************************************/
 /**********************************************************************/
 /**********************************************************************/
 /* Aspect ratios 1/1 to 6/7 */
@@ -597,11 +605,8 @@ a:hover {
     --slide-desc-text-size: 48px;
     --slide-title-size: 144px;
     /* .main-txt properties */
+    --main-desc-size: 28px;
     --max-main-line-length: 800px;
-    --main-title-size: 108px;
-    --main-researcher-name-size: 72px;
-    --main-desc-size: 36px;
-    --main-link-size: 24px;
     /* .matrix properties */
     --main-txt-padding: 75px;
     --matrix-col-spacing: 1fr 1fr 1fr 1fr;
@@ -618,9 +623,9 @@ a:hover {
 /* Aspect ratios 6/7 to 5/7 */
 @media (max-aspect-ratio: 6 / 7) and (min-height: 2100px) {
   :root {
-    --main-desc-size: 30px; }
-  .main-desc {
-    display: block; } }
+    --main-title-size: 96px;
+    --main-researcher-name-size: 60px;
+    --main-desc-size: 24px; } }
 
 /* Aspect ratios 5/7 to 1/2 */
 @media (max-aspect-ratio: 5 / 7) and (min-height: 2100px) {
@@ -664,25 +669,16 @@ a:hover {
     --imm-sch-url-size: 12px;
     --imm-sch-url-display: block;
     --max-logo-height: 50px;
-    --logo-padding: 0 0 0 0; }
-  .main-txt {
-    grid-template-columns: 50% 50%; }
-  .main-url {
-    padding-left: 2.5%; } }
+    --logo-padding: 0 0 0 0; } }
 
 /* Aspect ratios 1/2 to 1/3 */
 @media (max-aspect-ratio: 1 / 2) and (min-height: 2100px) {
   :root {
+    --main-txt-display: block;
     --main-title-size: 84px;
     --main-researcher-name-size: 48px;
-    --main-desc-size: 24px; }
-  .main-txt {
-    display: block; }
-  .main-desc {
-    -webkit-column-count: 1;
-            column-count: 1; }
-  .main-url {
-    padding-left: 0%; } }
+    --main-desc-size: 24px;
+    --main-desc-column-count: 1; } }
 
 /* Aspect ratios below 1/3 */
 @media (max-aspect-ratio: 1 / 3) and (min-height: 2100px) {
@@ -757,7 +753,7 @@ a:hover {
     /* .imm-sch-url-container properties */
     --imm-sch-url-container-display: block;
     --imm-sch-url-vertical-align-percentage: 52.5%;
-    --imm-sch-cont-padding: 40px 0px 0px 0px;
+    --imm-sch-cont-padding: 40px 40px 40px 40px;
     --imm-sch-url-bg-color: rgba(0, 0, 0, 0);
     --imm-sch-url-margin: 0 0 0 0;
     --imm-sch-url-column-width: 0%;
@@ -972,14 +968,12 @@ a:hover {
     /* .main-txt properties */
     --main-desc-size: 48px;
     /* .imm-sch-url-container properties */
+    --imm-sch-url-container-display: block;
+    --imm-sch-url-vertical-align-percentage: 0;
     --imm-sch-url-margin: 0 0 0 0;
     --imm-sch-url-column-width: 0%;
     --logo-column-width: 100%;
-    --logo-display: block; }
-  .imm-sch-url-container {
-    display: block; }
-  .imm-sch-url {
-    vertical-align: 0; } }
+    --logo-display: block; } }
 
 /* Aligns to 9x10 Commons Wall grid */
 @media (width: 2880px) and (height: 2400px) {
@@ -993,18 +987,13 @@ a:hover {
       "title desc"
       "name desc"
       "url desc";
+    --main-txt-column-widths: 30%;
+    --main-desc-column-count: 1;
     --main-title-size: 132px;
     --main-researcher-name-size: 96px;
-    --main-desc-size: 56px;
-    --main-link-size: 42px; }
-  .main-txt {
-    grid-template-columns: auto;
-    grid-template-rows: 30% 20% auto; }
-  .quote {
-    display: none; }
-  .main-desc {
-    -webkit-column-count: 1;
-            column-count: 1; } }
+    --main-desc-size: 54px;
+    --main-link-size: 42px;
+    --quote-display: none; } }
 
 /* Aligns to 16x7 iPearl Immersion Theater grid */
 @media (width: 6816px) and (height: 2240px) {
@@ -1052,6 +1041,7 @@ a:hover {
     --logo-display: block;
     --imm-sch-cont-padding: 0px 25px 0 25px;
     --imm-sch-url-size: 12px;
+    --imm-sch-url-vertical-align-percentage: 0;
     --imm-sch-url-padding: 0 0 0 0;
     --imm-sch-url-margin: 0 0 0 0;
     --max-logo-height: 40px;
@@ -1088,8 +1078,6 @@ a:hover {
     -webkit-box-sizing: border-box;
             box-sizing: border-box;
     background-color: black; }
-  .imm-sch-url {
-    vertical-align: 0; }
   .matrix-item {
     -webkit-transition: none;
     transition: none;
