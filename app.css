@@ -46,21 +46,14 @@
   --middle-row-height: 0vh;
   --bottom-row-height: 14.286vh;
   --main-cont-row-heights: var(--top-row-height) var(--bottom-row-height);
-  --main-container-fade: mainFade var(--slideshow-duration) infinite ease-in-out;
-  /* Image Viewer iframe properties */
+  /* .overlay-img-container properties */
   --slide-desc-overlay-width: 100vw;
   --slide-desc-overlay-padding: 75px;
   --slide-desc-text-size: 108px;
   --slide-title-size: 240px;
-  --slide-visibility: visible;
-  --slide-duration: 60s;
-  --slideshow-duration: 540s;
-  --slide-img-fade: slideFade var(--slide-duration) infinite ease-in-out;
-  --slide-desc-fade: descFade var(--slide-duration) infinite ease-in-out;
-  --slide-title-fade: titleFade var(--slide-duration) infinite ease-in-out;
-  --slide-bg-fade: bgFade var(--slideshow-duration) infinite ease-in-out;
   /* .main-txt properties */
   --main-txt-display: block;
+  --main-txt-overflow: hidden;
   --main-txt-grid-areas: "";
   --main-txt-column-widths: auto auto auto;
   --main-txt-heading-margin: 50px 0;
@@ -78,9 +71,7 @@
   --quote-padding: 25px 0 25px 0;
   --quote-margin: 0;
   /* .matrix properties */
-  --matrix-item-side-length: 70%;
   --matrix-item-max-side-length: 700px;
-  --matrix-item-gap: 0px;
   --matrix-item-height: 50vh;
   --matrix-item-width: calc(.25 * var(--left-col-width));
   --matrix-item-name-size: calc(24 / 1024 * 100vw);
@@ -94,6 +85,7 @@
   /* .imm-sch-url-container properties */
   --imm-sch-url-container-display: grid;
   --imm-sch-url-container-columns: 355px auto;
+  --imm-sch-cont-width: auto;
   --imm-sch-cont-padding: 0px 75px 0 75px;
   --imm-sch-url-bg-color: rgba(0, 0, 0, 0);
   --imm-sch-url-vertical-align: center;
@@ -105,7 +97,10 @@
   --imm-sch-url-column-width: 75%;
   --logo-column-width: 25%;
   --max-logo-height: 110px;
-  --logo-padding: 0 0 0 0; }
+  --logo-padding: 0 0 0 0;
+  --offsetX: 100px;
+  --offsetY: 100px;
+  --offsetZ: 450px; }
 
 /* Element containing .main-container */
 body {
@@ -143,147 +138,96 @@ a:hover {
 
 /**********************************************************************/
 /**********************************************************************/
-/******************** Window player content ********************/
+/***** Walt's implementation of image overlay for single page app *****/
 /**********************************************************************/
 /**********************************************************************/
-/**
- * <iframe> Image Viewer window overlaid on top of <main>.
- * Allows all the windows to be played without leaving the index page.
- */
-.slideshow {
+.overlay-img-container {
+  position: absolute;
+  z-index: 2;
   height: 100vh;
   width: 100vw;
-  z-index: 95;
-  border: 0;
-  position: absolute;
-  -webkit-animation: var(--slide-img-fade);
-          animation: var(--slide-img-fade);
-  visibility: var(--slide-visibility); }
+  overflow: hidden;
+  top: 0;
+  left: 0;
+  -webkit-transition-property: opacity, visibility;
+  transition-property: opacity, visibility;
+  -webkit-transition-duration: 1.5s;
+          transition-duration: 1.5s;
+  /* Container for window description overlay */
+  /* Container containing slide-title */
+  /* Image that was clicked on */
+  /* Zooms and pans across the image */ }
+  .overlay-img-container .slide-desc-overlay {
+    background-color: rgba(0, 0, 0, 0.5);
+    width: var(--slide-desc-overlay-width);
+    position: absolute;
+    bottom: 0;
+    padding: var(--slide-desc-overlay-padding);
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+    z-index: 3;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    /* Window description text */
+    /* codedglass.com URL that appears at end of window desc */ }
+    .overlay-img-container .slide-desc-overlay .slide-desc-text {
+      margin: 0;
+      font-size: var(--slide-desc-text-size); }
+    .overlay-img-container .slide-desc-overlay #slide-url {
+      color: white;
+      text-decoration: underline; }
+  .overlay-img-container .slide-title-container {
+    background-color: black;
+    width: 100vw;
+    height: 100vh;
+    z-index: 4;
+    position: absolute;
+    text-align: center;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    padding: var(--slide-desc-overlay-padding);
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+    /* Window title that fades in/out before window is displayed */ }
+    .overlay-img-container .slide-title-container #slide-title {
+      margin: 0;
+      font-size: var(--slide-title-size); }
+  .overlay-img-container .overlay-img {
+    width: 100%;
+    height: 100%;
+    -o-object-fit: cover;
+       object-fit: cover;
+    -webkit-transform: perspective(1200px) translateX(var(--offsetX)) translateY(var(--offsetY)) translateZ(var(--offsetZ));
+            transform: perspective(1200px) translateX(var(--offsetX)) translateY(var(--offsetY)) translateZ(var(--offsetZ));
+    -webkit-transition-property: -webkit-transform;
+    transition-property: -webkit-transform;
+    transition-property: transform;
+    transition-property: transform, -webkit-transform;
+    -webkit-transition-duration: 2s;
+            transition-duration: 2s; }
+  .overlay-img-container .pan-zoom {
+    -webkit-transform: perspective(1200px) translate(0);
+            transform: perspective(1200px) translate(0);
+    -webkit-transition-duration: 60s;
+            transition-duration: 60s; }
 
-/* Container for window description overlay */
-.slide-desc-overlay {
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 97;
-  width: var(--slide-desc-overlay-width);
-  position: absolute;
-  bottom: 0;
-  padding: var(--slide-desc-overlay-padding);
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+/* Makes the element fade away */
+.hidden {
+  visibility: hidden;
   opacity: 0;
-  -webkit-animation: var(--slide-desc-fade);
-          animation: var(--slide-desc-fade);
-  visibility: var(--slide-visibility); }
-
-/* Window description text */
-.slide-desc-text {
-  margin: 0;
-  font-size: var(--slide-desc-text-size);
-  opacity: 0;
-  -webkit-animation: var(--slide-desc-fade);
-          animation: var(--slide-desc-fade); }
-
-/* Container containing slide-title */
-.slide-title-container {
-  background-color: black;
-  width: 100vw;
-  height: 100vh;
-  z-index: 100;
-  position: absolute;
-  text-align: center;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  padding: var(--slide-desc-overlay-padding);
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-  opacity: 0;
-  -webkit-animation: var(--slide-title-fade);
-          animation: var(--slide-title-fade);
-  visibility: var(--slide-visibility); }
-
-/* Window title that fades in/out before window is displayed */
-#slide-title {
-  margin: 0;
-  font-size: var(--slide-title-size); }
-
-/* codedglass.com URL that appears at end of window desc */
-#slide-url {
-  color: white;
-  text-decoration: underline; }
-
-/* Background behind slideshow while it's playing */
-.slideshow-bg {
-  background-color: black;
-  width: 100vw;
-  height: 100vh;
-  z-index: 93;
-  position: absolute;
-  opacity: 0;
-  -webkit-animation: var(--slide-bg-fade);
-          animation: var(--slide-bg-fade);
-  visibility: var(--slide-visibility); }
-
-/**********************************************************************/
-/******************** Fade transitions ********************/
-/**********************************************************************/
-/******************** Title fade ********************/
-@-webkit-keyframes titleFade {
-  0%, 10% {
-    opacity: 0; }
-  5% {
-    opacity: 1; } }
-
-@keyframes titleFade {
-  0%, 10% {
-    opacity: 0; }
-  5% {
-    opacity: 1; } }
-
-/******************** Img fade ********************/
-@-webkit-keyframes slideFade {
-  0%, 5%, 100% {
-    opacity: 0; }
-  15%, 90% {
-    opacity: 1; } }
-
-@keyframes slideFade {
-  0%, 5%, 100% {
-    opacity: 0; }
-  15%, 90% {
-    opacity: 1; } }
-
-/******************** Desc fade ********************/
-@-webkit-keyframes descFade {
-  0%, 5%, 65% {
-    opacity: 0; }
-  15%, 55% {
-    opacity: 1; } }
-
-@keyframes descFade {
-  0%, 5%, 65% {
-    opacity: 0; }
-  15%, 55% {
-    opacity: 1; } }
-
-/******************** BG fade ********************/
-@-webkit-keyframes bgFade {
-  0%, 10%, 90%, 100% {
-    opacity: 0; }
-  11%, 89% {
-    opacity: 1; } }
-
-@keyframes bgFade {
-  0%, 10%, 90%, 100% {
-    opacity: 0; }
-  11%, 89% {
-    opacity: 1; } }
+  -webkit-transition-duration: 0.5s;
+          transition-duration: 0.5s; }
 
 /**********************************************************************/
 /**********************************************************************/
@@ -308,26 +252,10 @@ a:hover {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-  -webkit-animation: var(--main-container-fade);
-          animation: var(--main-container-fade); }
-
-/******************** Main container fade ********************/
-@-webkit-keyframes mainFade {
-  0%, 10%, 91%, 100% {
-    opacity: 1; }
-  11%, 90% {
-    opacity: 0; } }
-
-@keyframes mainFade {
-  0%, 10%, 91%, 100% {
-    opacity: 1; }
-  11%, 90% {
-    opacity: 0; } }
-
-/* Class to turn off animations on the index page */
-.no-anim {
-  -webkit-animation: initial;
-          animation: initial; }
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: column nowrap;
+          flex-flow: column nowrap; }
 
 /**********************************************************************/
 /******************** Main text area ********************/
@@ -339,6 +267,7 @@ a:hover {
 .main-txt {
   padding: var(--main-txt-padding);
   margin: var(--horizontal-center-margins);
+  overflow: var(--main-txt-overflow);
   grid-area: main-txt;
   background-color: var(--main-txt-bg-color);
   z-index: 1;
@@ -347,7 +276,10 @@ a:hover {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   grid-template-rows: auto auto 1fr;
-  grid-template-columns: var(--main-txt-column-widths); }
+  grid-template-columns: var(--main-txt-column-widths);
+  -webkit-box-ordinal-group: 3;
+      -ms-flex-order: 2;
+          order: 2; }
 
 /* Title of the researcher's collection of work */
 .main-title {
@@ -395,19 +327,26 @@ a:hover {
 /* Container for all the matrix items */
 .matrix {
   width: var(--left-col-width);
+  height: 100%;
   display: grid;
   grid-template-columns: var(--matrix-col-spacing);
-  grid-gap: var(--matrix-item-gap);
+  grid-gap: 0;
   -webkit-box-align: var(--center-position);
       -ms-flex-align: var(--center-position);
           align-items: var(--center-position);
   grid-area: matrix;
   overflow: var(--matrix-overflow);
-  background-clip: content-box; }
+  background-clip: content-box;
+  -webkit-box-ordinal-group: 2;
+      -ms-flex-order: 1;
+          order: 1;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1; }
 
-/* Hover state for matrix */
 /* Individual cell in the matrix */
 .matrix-item {
+  height: 100%;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -432,6 +371,7 @@ a:hover {
 .matrix-item-img {
   width: var(--matrix-item-width);
   height: var(--matrix-item-height);
+  max-height: 100%;
   justify-self: var(--center-position);
   -o-object-fit: cover;
      object-fit: cover;
@@ -470,6 +410,7 @@ a:hover {
 /**********************************************************************/
 /* Container for the URL to the Immersion Scholar project website */
 .imm-sch-url-container {
+  width: var(--imm-sch-cont-width);
   grid-area: link;
   -ms-flex-item-align: var(--imm-sch-url-vertical-align);
       align-self: var(--imm-sch-url-vertical-align);
@@ -480,7 +421,10 @@ a:hover {
   display: var(--imm-sch-url-container-display);
   grid-template-areas: var(--imm-sch-url-container-areas);
   grid-template-columns: var(--imm-sch-url-container-columns);
-  padding: var(--imm-sch-cont-padding); }
+  padding: var(--imm-sch-cont-padding);
+  -webkit-box-ordinal-group: 4;
+      -ms-flex-order: 3;
+          order: 3; }
 
 /* Immersive Scholar logo */
 #logo {
@@ -514,7 +458,7 @@ a:hover {
     --main-researcher-name-size: 96px;
     --main-desc-size: 48px;
     --main-link-size: 40px;
-    /* Image Viewer iframe properties */
+    /* .overlay-img-container properties */
     --slide-desc-text-size: 84px;
     --slide-title-size: 216px; } }
 
@@ -531,6 +475,7 @@ a:hover {
 @media (max-aspect-ratio: 8 / 5) and (min-height: 2100px) {
   :root {
     /* body and .main-container properties */
+    --main-container-display: flex;
     --main-container-grid-areas:
       "matrix matrix"
       "main-txt main-txt"
@@ -541,7 +486,7 @@ a:hover {
     --middle-row-height: 630px;
     --bottom-row-height: 10vh;
     --main-cont-row-heights: var(--top-row-height) var(--middle-row-height) var(--bottom-row-height);
-    /* Image Viewer iframe properties */
+    /* .overlay-img-container properties */
     --slide-desc-text-size: 60px;
     --slide-title-size: 192px;
     /* .main-txt properties */
@@ -553,7 +498,7 @@ a:hover {
     --main-txt-heading-margin: 0px 0px 25px 0px;
     --main-title-size: 120px;
     --main-researcher-name-size: 84px;
-    --main-desc-size: 40px;
+    --main-desc-size: 42px;
     --main-link-size: 30px;
     --main-txt-padding: 75px;
     --main-desc-padding-left: 75px;
@@ -563,29 +508,45 @@ a:hover {
     --quote-margin: 36px 0 0 0;
     /* .matrix properties */
     --matrix-width: 100%;
-    --matrix-item-height: calc(var(--top-row-height) / 2);
-    --matrix-item-side-length: 85%;
+    --matrix-item-width: 25vw;
+    --matrix-item-height: 100%;
     /* .imm-sch-url-container properties */
+    --imm-sch-cont-width: 100%;
     --imm-sch-url-container-display: grid;
-    --imm-sch-cont-padding-top: 2.5vh;
+    --imm-sch-cont-padding: 0 75px 75px;
+    --imm-sch-url-vertical-align: flex-start;
     --imm-sch-url-vertical-align-percentage: 55%;
     --imm-sch-url-bg-color: rgba(0, 0, 0, 0);
     --imm-sch-url-padding: 0 0 0 0;
     --imm-sch-url-display: inline;
     --logo-display: inline;
-    --logo-padding: 0 0 0 0; } }
+    --logo-padding: 0 0 0 0; }
+  .main-container {
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center; }
+  .main-txt {
+    max-width: 3360px; }
+  .imm-sch-url-container {
+    max-width: 3360px;
+    -ms-flex-item-align: auto;
+        align-self: auto; } }
 
 /* Aspect ratios 10/7 to 1/1 */
 @media (max-aspect-ratio: 10 / 7) and (min-height: 2100px) {
   :root {
     /* body and .main-container properties */
-    /* Image Viewer iframe properties */
+    /* .overlay-img-container properties */
     --slide-title-size: 168px;
     /* .main-txt properties */
     --main-title-size: 102px;
     --main-researcher-name-size: 66px;
-    --main-desc-size: 32px;
-    --main-link-size: 24px; } }
+    --main-desc-size: 36px;
+    --main-link-size: 24px; }
+  .main-txt {
+    max-width: 3152px; }
+  .imm-sch-url-container {
+    max-width: 3152px; } }
 
 /**********************************************************************/
 /**********************************************************************/
@@ -601,11 +562,13 @@ a:hover {
   :root {
     /* body and .main-container properties */
     --horizontal-center-margins: 0;
-    /* Image Viewer iframe properties */
+    /* .overlay-img-container properties */
     --slide-desc-text-size: 48px;
     --slide-title-size: 144px;
     /* .main-txt properties */
-    --main-desc-size: 28px;
+    --main-title-size: 96px;
+    --main-researcher-name-size: 54px;
+    --main-desc-size: 32px;
     --max-main-line-length: 800px;
     /* .matrix properties */
     --main-txt-padding: 75px;
@@ -618,17 +581,14 @@ a:hover {
     --imm-sch-url-vertical-align-percentage: 40%;
     --imm-sch-url-container-columns: 265px auto;
     --imm-sch-url-margin: 47.5px 0 0 0;
-    --max-logo-height: 80px; } }
-
-/* Aspect ratios 6/7 to 5/7 */
-@media (max-aspect-ratio: 6 / 7) and (min-height: 2100px) {
-  :root {
-    --main-title-size: 96px;
-    --main-researcher-name-size: 60px;
-    --main-desc-size: 24px; } }
+    --max-logo-height: 80px; }
+  .main-txt {
+    max-width: 2100px; }
+  .imm-sch-url-container {
+    max-width: 2100px; } }
 
 /* Aspect ratios 5/7 to 1/2 */
-@media (max-aspect-ratio: 5 / 7) and (min-height: 2100px) {
+@media (max-aspect-ratio: 6 / 7) and (min-height: 2100px) {
   :root {
     /* body and .main-container properties */
     --main-container-grid-areas:
@@ -640,45 +600,54 @@ a:hover {
     --top-row-height: 55vh;
     --middle-row-height: 40vh;
     --bottom-row-height: 5vh;
-    /* Image Viewer iframe properties */
+    /* .overlay-img-container properties */
     --slide-desc-text-size: 36px;
     --slide-title-size: 120px;
     /* .main-txt properties */
-    --main-txt-display: grid;
-    --main-txt-grid-areas:
-      "title title"
-      "name name"
-      "desc desc"
-      ". url";
+    --main-txt-display: block;
     --main-txt-padding: 50px;
     --main-desc-padding-left: 0px;
-    --quote-padding: 25px 0 25px 0;
-    --main-title-size: 96px;
-    --main-researcher-name-size: 60px;
+    --main-desc-column-count: 1;
+    --main-title-size: 90px;
+    --main-researcher-name-size: 54px;
     --main-desc-size: 28px;
     --main-link-size: 18px;
     /* .matrix properties */
     --matrix-col-spacing: 1fr 1fr;
     --matrix-row-spacing: 1fr 1fr 1fr 1fr;
-    --matrix-item-height: calc(.25 * var(--top-row-height));
+    --matrix-item-height: 100%;
     --matrix-item-width: calc(.5 * var(--left-col-width));
     /* .imm-sch-url-container properties */
     --imm-sch-url-container-columns: 175px auto;
-    --imm-sch-cont-padding: 0px 50px 0 50px;
+    --imm-sch-cont-padding: 0px 50px 50px;
     --imm-sch-url-margin: 32.5px 0 0 0;
     --imm-sch-url-size: 12px;
     --imm-sch-url-display: block;
     --max-logo-height: 50px;
-    --logo-padding: 0 0 0 0; } }
+    --logo-padding: 0 0 0 0; }
+  .main-txt {
+    -webkit-column-count: 2;
+            column-count: 2;
+    -webkit-column-gap: 75px;
+            column-gap: 75px;
+    max-width: 1800px; }
+  .imm-sch-url-container {
+    max-width: 1800px; } }
 
 /* Aspect ratios 1/2 to 1/3 */
 @media (max-aspect-ratio: 1 / 2) and (min-height: 2100px) {
   :root {
-    --main-txt-display: block;
     --main-title-size: 84px;
     --main-researcher-name-size: 48px;
     --main-desc-size: 24px;
-    --main-desc-column-count: 1; } }
+    --main-desc-padding-left: 0px;
+    --main-desc-column-count: 1; }
+  .main-txt {
+    -webkit-column-count: 1;
+            column-count: 1;
+    max-width: 760px; }
+  .imm-sch-url-container {
+    max-width: 760px; } }
 
 /* Aspect ratios below 1/3 */
 @media (max-aspect-ratio: 1 / 3) and (min-height: 2100px) {
@@ -687,7 +656,7 @@ a:hover {
     --top-row-height: 50vh;
     --middle-row-height: 40vh;
     --bottom-row-height: 10vh;
-    /* Image Viewer iframe properties */
+    /* .overlay-img-container properties */
     --slide-title-size: 108px;
     /* .main-txt properties */
     --main-title-size: 72px;
@@ -697,9 +666,6 @@ a:hover {
     --imm-sch-url-container-display: block;
     --imm-sch-url-margin: 0; } }
 
-/**********************************************************************/
-/******************** For height-based changes ********************/
-/**********************************************************************/
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
@@ -731,13 +697,18 @@ a:hover {
     --top-row-height: 100vh;
     --bottom-row-height: 0vh;
     --main-container-fade: initial;
-    /* Image Viewer iframe properties */
+    /* .overlay-img-container properties */
     --slide-visibility: hidden;
     --slide-img-fade: initial;
     --slide-desc-fade: initial;
     --slide-title-fade: initial;
     --slide-bg-fade: initial;
+    --slide-title-size: 72px;
+    --slide-desc-text-size: 16px;
+    --slide-desc-overlay-padding: 40px;
+    --slide-desc-overlay-width: var(--right-col-width);
     /* .main-txt properties */
+    --main-txt-overflow: auto;
     --main-txt-heading-margin: 0 0 20px 0;
     --main-txt-padding: 40px 40px 40px 40px;
     --main-txt-bg-color: rgb(54, 69, 79, 0);
@@ -752,6 +723,7 @@ a:hover {
     --matrix-row-spacing: 1fr 1fr;
     /* .imm-sch-url-container properties */
     --imm-sch-url-container-display: block;
+    --imm-sch-url-vertical-align: end;
     --imm-sch-url-vertical-align-percentage: 52.5%;
     --imm-sch-cont-padding: 40px 40px 40px 40px;
     --imm-sch-url-bg-color: rgba(0, 0, 0, 0);
@@ -766,15 +738,9 @@ a:hover {
     --imm-sch-url-display: block;
     --logo-display: block;
     --max-logo-height: 40px; }
-  .imm-sch-url-container {
-    -ms-flex-item-align: end;
-        align-self: end; }
-  .main-txt {
-    overflow: auto; }
-  .main-url {
-    margin-bottom: 0; }
-  .matrix {
-    overflow: hidden; } }
+  .slide-desc-overlay {
+    height: 100vh;
+    right: 0; } }
 
 /**********************************************************************/
 /**********************************************************************/
@@ -830,6 +796,8 @@ a:hover {
     /* body and .main-container properties */
     --left-col-width: 50vw;
     --right-col-width: 50vw;
+    /* .overlay-img-container properties */
+    --slide-desc-overlay-width: 100vw;
     /* .main-txt properties */
     --main-txt-heading-margin: 0 0 25px 0;
     /* .matrix properties */
@@ -838,7 +806,9 @@ a:hover {
     --matrix-item-name-max-width: calc(.5 * var(--left-col-width));
     --matrix-col-spacing: 1fr 1fr;
     --matrix-row-spacing: 1fr 1fr 1fr 1fr;
-    /* .imm-sch-url-container properties */ } }
+    /* .imm-sch-url-container properties */ }
+  .slide-desc-overlay {
+    height: auto; } }
 
 /**********************************************************************/
 /**********************************************************************/
@@ -854,7 +824,11 @@ a:hover {
   :root {
     /* body and .main-container properties */
     --horizontal-center-margins: 0 auto;
-    --main-container-display: block;
+    --main-container-display: flex;
+    /* .overlay-img-container properties */
+    --slide-title-size: 48px;
+    --slide-desc-text-size: 24px;
+    --slide-desc-overlay-padding: 5vw;
     /* .main-txt properties */
     --main-txt-padding: 5vw;
     --main-title-size: 60px;
@@ -871,13 +845,29 @@ a:hover {
     --imm-sch-url-size: 12px;
     --imm-sch-cont-padding: 5vw; }
   .main-container {
-    width: 100%; }
-  .matrix {
     width: 100%;
-    overflow: auto;
+    height: auto; }
+  .main-txt {
+    -webkit-box-ordinal-group: 2;
+        -ms-flex-order: 1;
+            order: 1; }
+  .matrix {
+    height: auto;
+    width: 100%;
     padding: 0 5vw;
     -webkit-box-sizing: border-box;
-            box-sizing: border-box; } }
+            box-sizing: border-box;
+    -webkit-box-ordinal-group: 3;
+        -ms-flex-order: 2;
+            order: 2; }
+  .matrix-item-img {
+    max-height: none; }
+  .imm-sch-url-container {
+    -webkit-box-ordinal-group: 4;
+        -ms-flex-order: 3;
+            order: 3; }
+  .overlay-img-container {
+    position: fixed; } }
 
 /**********************************************************************/
 /**********************************************************************/
@@ -892,10 +882,10 @@ a:hover {
 @media (max-width: 425px) and (max-height: 2099px) {
   :root {
     /* body and .main-container properties */
+    /* .overlay-img-container properties */
+    --slide-desc-text-size: 18px;
     /* .main-txt properties */
     --main-txt-heading-margin: 0 0 15px 0;
-    --main-title-size: 60px;
-    --main-researcher-name-size: 36px;
     --main-desc-size: 18px;
     --main-link-size: 12px;
     /* .matrix properties */
@@ -919,6 +909,9 @@ a:hover {
 @media (max-width: 375px) and (max-height: 2099px) {
   :root {
     /* body and .main-container properties */
+    /* .overlay-img-container properties */
+    --slide-title-size: 42px;
+    --slide-desc-text-size: 16px;
     /* .main-txt properties */
     --main-title-size: 54px;
     --main-researcher-name-size: 36px;
@@ -939,6 +932,9 @@ a:hover {
 @media (max-width: 320px) and (max-height: 2099px) {
   :root {
     /* body and .main-container properties */
+    /* .overlay-img-container properties */
+    --slide-title-size: 36px;
+    --slide-desc-text-size: 14px;
     /* .main-txt properties */
     --main-txt-heading-margin: 0 0 10px 0;
     --main-title-size: 48px;
@@ -979,6 +975,7 @@ a:hover {
 @media (width: 2880px) and (height: 2400px) {
   :root {
     /* body and .main-container properties */
+    --main-container-display: grid;
     --top-row-height: 60vh;
     --middle-row-height: 30vh;
     --bottom-row-height: 10vh;
@@ -993,7 +990,11 @@ a:hover {
     --main-researcher-name-size: 96px;
     --main-desc-size: 54px;
     --main-link-size: 42px;
-    --quote-display: none; } }
+    --quote-display: none; }
+  .imm-sch-url-container {
+    -ms-flex-item-align: center;
+        align-self: center;
+    padding-bottom: 0; } }
 
 /* Aligns to 16x7 iPearl Immersion Theater grid */
 @media (width: 6816px) and (height: 2240px) {
@@ -1019,7 +1020,7 @@ a:hover {
     --right-col-width: 0vw;
     --main-container-display: block;
     --main-container-fade: mainFade var(--slideshow-duration) infinite ease-in-out;
-    /* Image Viewer iframe properties */
+    /* .overlay-img-container properties */
     --slide-desc-overlay-width: 405px;
     --slide-desc-overlay-padding: 25px;
     --slide-desc-text-size: 18px;
@@ -1037,6 +1038,7 @@ a:hover {
     --main-desc-size: 18px;
     --main-link-size: 12px;
     /* .imm-sch-url-container properties */
+    --imm-sch-cont-width: var(--vis-wall-text-col-width);
     --imm-sch-url-container-display: block;
     --logo-display: block;
     --imm-sch-cont-padding: 0px 25px 0 25px;
@@ -1071,7 +1073,6 @@ a:hover {
     background-color: black;
     height: 100vh; }
   .imm-sch-url-container {
-    width: var(--vis-wall-text-col-width);
     position: fixed;
     left: var(--vis-wall-text-left-offset);
     bottom: 350px;
