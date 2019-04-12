@@ -141,6 +141,7 @@ a:hover {
 /***** Walt's implementation of image overlay for single page app *****/
 /**********************************************************************/
 /**********************************************************************/
+/* Contains the title, description, and image of the overlay */
 .overlay-img-container {
   position: absolute;
   z-index: 2;
@@ -696,13 +697,7 @@ a:hover {
     --right-col-width: 25vw;
     --top-row-height: 100vh;
     --bottom-row-height: 0vh;
-    --main-container-fade: initial;
     /* .overlay-img-container properties */
-    --slide-visibility: hidden;
-    --slide-img-fade: initial;
-    --slide-desc-fade: initial;
-    --slide-title-fade: initial;
-    --slide-bg-fade: initial;
     --slide-title-size: 72px;
     --slide-desc-text-size: 16px;
     --slide-desc-overlay-padding: 40px;
@@ -1019,17 +1014,11 @@ a:hover {
     --left-col-width: 100vw;
     --right-col-width: 0vw;
     --main-container-display: block;
-    --main-container-fade: mainFade var(--slideshow-duration) infinite ease-in-out;
     /* .overlay-img-container properties */
     --slide-desc-overlay-width: 405px;
     --slide-desc-overlay-padding: 25px;
     --slide-desc-text-size: 18px;
     --slide-title-size: 72px;
-    --slide-visibility: visible;
-    --slide-img-fade: slideFade var(--slide-duration) infinite ease-in-out;
-    --slide-desc-fade: descFade var(--slide-duration) infinite ease-in-out;
-    --slide-title-fade: titleFade var(--slide-duration) infinite ease-in-out;
-    --slide-bg-fade: bgFade var(--slideshow-duration) infinite ease-in-out;
     /* .main-txt properties */
     --main-txt-heading-margin: 0 0 25px 0;
     --main-txt-padding: 300px 25px 0 25px;
