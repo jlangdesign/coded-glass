@@ -1083,6 +1083,7 @@ a:hover {
     --slide-desc-overlay-padding: 25px;
     --slide-desc-text-size: 18px;
     --slide-title-size: 72px;
+    --overlay-button-display: hidden;
     /* .main-txt properties */
     --main-txt-heading-margin: 0 0 25px 0;
     --main-txt-padding: 300px 25px 0 25px;
@@ -1126,6 +1127,7 @@ a:hover {
     background-color: black;
     height: 100vh; }
   .imm-sch-url-container {
+    padding: var(--imm-sch-cont-padding);
     position: fixed;
     left: var(--vis-wall-text-left-offset);
     bottom: 350px;
