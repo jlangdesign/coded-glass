@@ -26,9 +26,9 @@ The properties below indicate considerations with regard to optimal display of t
 **Optimal viewing distance:** near to moderate distance
 
 ## Environmental differences
-**Large-scale:** The large-scale display is designed for non-interactive video walls and plays automatically. It begins at the index page with images of the windows, which are randomly ordered each time. The order they are displayed in in the matrix determines the order that they will be played in. After a minute elapses, the display starts to play the slideshows of each window in the specified order. Once all the windows have been played, the display will return to the index page, but the images will be shuffled into a different order. The display continuously loops between the slideshows of each window and the index page.
+**Large-scale:** The large-scale display is designed for non-interactive video walls and plays automatically. It begins at the index page with thumbnails of the windows, which are randomly ordered each time the display is loaeded. The order they are displayed in in the matrix determines the order that they will be played in. After a minute elapses, the display starts to play the slideshows of each window in the specified order. Each image in the slideshow is zoomed in on and panned across so viewers can see the details of the glass. Once all the windows have been played, the display will return to the index page. The display continuously loops between the slideshows of each window and the index page.
 
-**Personal-sized:** The personal-sized display is designed for smaller, interactive devices, such as desktops, laptops, and handhelds. Hovering over a window's image will display the window's title. Clicking/tapping on an image will play that window's slideshow. The user can choose which windows they want to play.
+**Personal-sized:** The personal-sized display is designed for smaller, interactive devices, such as desktops, laptops, and handhelds. Hovering over a window's image will display the window's title. Clicking/tapping on a thumbnail will play that window's slideshow. The user can choose which windows they want to play.
 
 ## Authors
 Liss LaFleur
